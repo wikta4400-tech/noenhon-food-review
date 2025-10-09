@@ -3,91 +3,6 @@ import urllib.parse
 
 st.set_page_config(page_title="รีวิวร้านอาหารปราจีนบุรี", layout="centered")
 
-# -----------------------------------------------------------
-# --- CSS: บังคับตัวอักษรดำ + แก้ไขปุ่มให้มีขอบชัดเจน (Wongnai Style) ---
-# -----------------------------------------------------------
-st.markdown(
-    """
-    <style>
-    /* 1. พื้นหลังหลัก (ขาวสะอาด) */
-    .stApp {
-        background-color: #FFFFFF !important; 
-    }
-    
-    /* 2. บังคับตัวอักษรหลักทั้งหมดเป็นสีดำสนิท */
-    .stApp, .stMarkdown, .stText {
-        color: #000000 !important; 
-    }
-    
-    /* 3. บังคับให้ Sidebar เป็นสีขาว */
-    .css-1d3f9sd, .css-1dp5q0n {
-        background-color: #FFFFFF !important;
-    }
-
-    /* 4. หัวข้อหลัก (Title, Subheader) ใช้สีน้ำเงินเข้มแบบ Wongnai */
-    h1, h2, h3 {
-        color: #002244 !important; /* น้ำเงินเข้ม */
-    }
-
-    /* 5. บังคับตัวอักษรใน Input/Textarea/Password/Slider/Alerts ให้เป็นสีดำ */
-    .stTextInput>div>div>input, 
-    .stTextArea>div>div>textarea,
-    .stSlider label,
-    .stAlert {
-        color: #000000 !important;
-    }
-    /* Placeholder text (ตัวอักษรแนะนำในช่องว่าง) */
-    input::placeholder {
-        color: #666666 !important; 
-    }
-
-    /* 6. ปุ่มหลัก (Primary) - สีส้มสไตล์ Wongnai (ใช้สำหรับ ส่งรีวิว, เข้าสู่ระบบ) */
-    .stButton>button {
-        background-color: #FF5722; /* สีส้มแบบ Wongnai */
-        color: #FFFFFF !important; /* ตัวอักษรสีขาวในปุ่มส้ม */
-        border: 1px solid #FF5722;
-        border-radius: 8px;
-        font-weight: bold; /* ตัวหนา */
-    }
-    
-    /* 7. ปุ่มรอง (Secondary) - ปุ่มที่มีสัญลักษณ์ (ร้านทั้งหมด, ร้านที่ถูกใจ, Favorite) */
-    .stButton>button:has(.streamlit-emoji-icon) {
-        background-color: #FFFFFF; 
-        color: #002244 !important; /* ตัวอักษรน้ำเงินเข้ม */
-        border: 2px solid #002244; /* เพิ่มขอบน้ำเงินเข้มเพื่อให้โดดเด่นจากพื้นหลังขาว */
-    }
-    
-    /* 8. Input Fields - พื้นหลังเทาอ่อนและขอบเทา */
-    .stTextInput>div>div>input, 
-    .stTextArea>div>div>textarea {
-        background-color: #F8F8F8;
-        border: 1px solid #CCCCCC;
-        border-radius: 4px;
-    }
-
-    /* 9. กล่องข้อมูล (st.info) */
-    .stAlert:has(.streamlit-badge-info) {
-        background-color: #E6F7FF; /* ฟ้าอ่อน */
-        border: 1px solid #002244;
-    }
-
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-# -----------------------------------------------------------
-
-# -----------------------------------------------------------
-# --- โลโก้ ---
-# -----------------------------------------------------------
-# ❗❗ คุณต้องเปลี่ยน URL/ชื่อไฟล์ด้านล่างนี้ ❗❗
-st.image(
-    "https://i.ibb.co/your-logo-image.png", # <--- แทนที่ด้วย URL โลโก้ของคุณ (หรือชื่อไฟล์ เช่น "my_logo.png")
-    width=150
-)
-# -----------------------------------------------------------
-
-
 # -------------------------------
 # 🔐 ระบบผู้ใช้ (จำลอง)
 # -------------------------------
@@ -230,7 +145,6 @@ if not st.session_state.logged_in:
     with tab1:
         username = st.text_input("ชื่อผู้ใช้", key="login_user")
         password = st.text_input("รหัสผ่าน", type="password", key="login_pass")
-        # ปุ่มเข้าสู่ระบบ (Primary style - สีส้ม)
         if st.button("เข้าสู่ระบบ"):
             if username in st.session_state.users and st.session_state.users[username] == password:
                 st.session_state.logged_in = True
@@ -244,7 +158,6 @@ if not st.session_state.logged_in:
     with tab2:
         new_user = st.text_input("ชื่อผู้ใช้ใหม่", key="reg_user")
         new_pass = st.text_input("รหัสผ่านใหม่", type="password", key="reg_pass")
-        # ปุ่มสมัครสมาชิก (Primary style - สีส้ม)
         if st.button("สมัครสมาชิก"):
             if new_user in st.session_state.users:
                 st.warning("ชื่อผู้ใช้นี้มีอยู่แล้ว")
@@ -264,7 +177,6 @@ if not st.session_state.logged_in:
 # -------------------------------
 with st.sidebar:
     st.write(f"👤 ผู้ใช้งาน: **{st.session_state.current_user}**")
-    # ปุ่มออกจากระบบ (Secondary style - มีขอบน้ำเงินเข้ม)
     if st.button("ออกจากระบบ", use_container_width=True):
         st.session_state.logged_in = False
         st.session_state.current_user = ""
@@ -277,8 +189,8 @@ st.title("🍽️ รีวิวร้านอาหารในปราจ�
 
 # รับค่าค้นหาจากผู้ใช้
 search_query = st.text_input("🔍 ค้นหาร้านอาหารตามชื่อ ประเภท หรือชื่อร้าน", 
-                             key="search_input_key", 
-                             on_change=add_to_history) 
+                            key="search_input_key", 
+                            on_change=add_to_history) 
 
 # -------------------------------
 # 🎯 การกำหนดรายการร้านที่จะแสดง
@@ -289,12 +201,12 @@ current_user_favorites = st.session_state.favorites.get(st.session_state.current
 col_all, col_fav, _ = st.columns([1, 1, 2])
 
 with col_all:
-    # ปุ่มแสดงร้านทั้งหมด (Secondary style - มีขอบน้ำเงินเข้ม)
+    # ปุ่มแสดงร้านทั้งหมด
     if st.button("🏠 ร้านทั้งหมด", disabled=(st.session_state.view_mode == "all" and not search_query.strip()), on_click=reset_search, use_container_width=True):
         pass
 
 with col_fav:
-    # ปุ่มแสดงร้านที่ถูกใจ (Secondary style - มีขอบน้ำเงินเข้ม)
+    # ปุ่มแสดงร้านที่ถูกใจ
     fav_count = len(current_user_favorites)
     if st.button(f"❤️ ร้านที่ถูกใจ ({fav_count})", disabled=(st.session_state.view_mode == "favorites" and not search_query.strip()), on_click=switch_to_favorites, use_container_width=True):
         pass
@@ -327,7 +239,7 @@ if is_search_active:
     if is_not_all_mode:
         button_label = "⬅️ ย้อนกลับสู่ร้านที่ถูกใจทั้งหมด" 
 
-    # ปุ่มย้อนกลับ (Secondary style - มีขอบน้ำเงินเข้ม)
+    # เมื่อกดปุ่มนี้ จะเคลียร์ช่องค้นหา (search_query) เท่านั้น
     if st.button(button_label, on_click=set_search_from_button, args=("",), use_container_width=True): 
         pass
         
@@ -354,7 +266,6 @@ if filtered_restaurants:
             st.subheader(f"🏠 {r['ชื่อร้าน']}")
         
         with col_fav_btn:
-            # ปุ่ม Favorite (Secondary style - มีขอบน้ำเงินเข้ม)
             st.button(
                 f"{heart_icon} Favorite", 
                 key=f"fav_btn_{r['ชื่อร้าน']}", 
@@ -368,9 +279,8 @@ if filtered_restaurants:
         st.markdown(f"**ประเภท:** {r['ประเภท']} | **ราคา:** {r['ราคา']}")
         
         # ❗ ใช้ st.link_button เพื่อเปิด Google Maps จริง (ด้วยการค้นหาชื่อร้าน) 
-        # ปุ่ม Link Button (Secondary style - มีขอบน้ำเงินเข้ม)
         st.link_button(
-            "🌐 เปิด Google Maps", 
+            "🌐 เปิด Google Maps (ใช้งานได้จริง)", 
             url=r['แผนที่'], # URL ที่สร้างจากการค้นหาชื่อร้าน (รูปแบบมาตรฐาน)
             use_container_width=True
         )
@@ -399,8 +309,7 @@ if filtered_restaurants:
             st.markdown("### 📝 รีวิวร้านนี้")
             rating = st.slider("ให้คะแนน (ดาว)", 1, 5, 3, key=f"rating_{r['ชื่อร้าน']}")
             comment = st.text_area("ความคิดเห็น", key=f"comment_{r['ชื่อร้าน']}")
-            # ปุ่มส่งรีวิว (Primary style - สีส้ม)
-            submitted = st.form_submit_button("ส่งรีวิว") 
+            submitted = st.form_submit_button("ส่งรีวิว")
 
             if submitted:
                 if not comment:
